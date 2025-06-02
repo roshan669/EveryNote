@@ -5,11 +5,12 @@ import * as SecureStore from "expo-secure-store"
 
 export const authClient = createAuthClient({
     plugins: [expoClient({
+
         scheme: "expo",
         storage: SecureStore
     })],
-    baseURL: "http://localhost:3000",
+    baseURL: "http://192.168.253.132:3000",
 })
 
-export const { signIn, signOut } = authClient
+export const { signIn, signOut } = authClient;
 

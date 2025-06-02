@@ -19,8 +19,8 @@ export const config = {
             redirectURI: "http://localhost:3000/api/auth/callback/discord",
         },
         google: {
-            clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
             redirectURI: "http://localhost:3000/api/auth/callback/google",
         },
     },

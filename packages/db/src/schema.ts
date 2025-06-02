@@ -7,8 +7,8 @@ export const Post = pgTable("post", (t) => ({
   id: t.uuid().notNull().primaryKey().defaultRandom(),
   title: t.varchar({ length: 256 }).notNull(),
   content: t.text().notNull(),
-  createdAt: t.timestamp().defaultNow().notNull(),
-  updatedAt: t
+  created_at: t.timestamp().defaultNow().notNull(),
+  updated_at: t
     .timestamp({ mode: "date", withTimezone: true })
     .$onUpdateFn(() => sql`now()`),
 }));
@@ -18,8 +18,8 @@ export const CreatePostSchema = createInsertSchema(Post, {
   content: z.string().max(256),
 }).omit({
   id: true,
-  createdAt: true,
-  updatedAt: true,
+  created_at: true,
+  updated_at: true,
 });
 
 export * from "./auth-schema"

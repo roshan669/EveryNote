@@ -1,4 +1,3 @@
-"use client";
 import { getSession } from "@acme/auth";
 import { Button } from "@acme/ui/button";
 import { headers } from "next/headers";
@@ -13,9 +12,10 @@ export async function AuthShowcase() {
         <Button
           size="lg"
           formAction={async () => {
+            "use server";
             const res = await auth.api.signInSocial({
               body: {
-                provider: "discord",
+                provider: "google",
                 callbackURL: "/",
               },
             });
