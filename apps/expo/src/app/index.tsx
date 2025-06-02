@@ -1,144 +1,130 @@
 import { useState } from "react";
-import { Button, Pressable, Text, TextInput, View } from "react-native";
+
+import type { ViewStyle, StyleProp, ImageSourcePropType } from "react-native";
+import { Image, Text, TouchableOpacity, View, Dimensions } from "react-native";
+import homepageImage from "../../assets/homepage.png";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link, Stack } from "expo-router";
-import { FlashList } from "@shopify/flash-list";
+import { Stack } from "expo-router";
 
 import type { RouterOutputs } from "~/utils/api";
 import { api } from "~/utils/api";
 import { authClient, signIn, signOut } from "~/utils/auth";
+import { Ionicons } from "@expo/vector-icons";
 
-function PostCard(props: {
-  post: RouterOutputs["post"]["all"][number];
-  onDelete: () => void;
-}) {
-  return (
-    <View className="flex flex-row rounded-lg bg-muted p-4">
-      <View className="flex-grow">
-        <Link
-          asChild
-          href={{
-            pathname: "/post/[id]",
-            params: { id: props.post.id },
-          }}
-        >
-          <Pressable className="">
-            <Text className="text-xl font-semibold text-primary">
-              {props.post.title}
-            </Text>
-            <Text className="mt-2 text-foreground">{props.post.content}</Text>
-          </Pressable>
-        </Link>
-      </View>
-      <Pressable onPress={props.onDelete}>
-        <Text className="font-bold uppercase text-primary">Delete</Text>
-      </Pressable>
-    </View>
-  );
+// Get screen width for responsive image sizing
+const { width: screenWidth } = Dimensions.get("window");
+
+interface MobileAuthProps {
+  iconName: "logo-google" | "logo-apple";
+  name: string;
+  style: StyleProp<ViewStyle>;
 }
 
-function CreatePost() {
-  const utils = api.useUtils();
-
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-
-  const { mutate, error } = api.post.create.useMutation({
-    async onSuccess() {
-      setTitle("");
-      setContent("");
-      await utils.post.all.invalidate();
-    },
-  });
-
+function MobileAuth({ iconName, name, style }: MobileAuthProps) {
   return (
-    <View className="mt-4 flex gap-2">
-      <TextInput
-        className="items-center rounded-md border border-input bg-background px-3 text-lg leading-[1.25] text-foreground"
-        value={title}
-        onChangeText={setTitle}
-        placeholder="Title"
+    <TouchableOpacity
+      // Potential Blunder 1: Fixed height and width on button
+      // Consider using padding and flexible width (e.g., w-full or a percentage)
+      // or adjust the fixed width to be smaller.
+      className=" flex-row gap-5 rounded-[30px] h-12 justify-center items-center mb-5 w-full"
+      style={style}
+      onPress={async () => {
+        await signIn.social({
+          provider: "google",
+          callbackURL: `http://localhost:3000/api/auth/callback/${name.toLowerCase()}`,
+        });
+      }}
+    >
+      <Ionicons
+        name={iconName}
+        size={23}
+        color={name === "Google" ? "black" : "white"}
       />
-      {error?.data?.zodError?.fieldErrors.title && (
-        <Text className="mb-2 text-destructive">
-          {error.data.zodError.fieldErrors.title}
-        </Text>
-      )}
-      <TextInput
-        className="items-center rounded-md border border-input bg-background px-3 text-lg leading-[1.25] text-foreground"
-        value={content}
-        onChangeText={setContent}
-        placeholder="Content"
-      />
-      {error?.data?.zodError?.fieldErrors.content && (
-        <Text className="mb-2 text-destructive">
-          {error.data.zodError.fieldErrors.content}
-        </Text>
-      )}
-      <Pressable
-        className="flex items-center rounded bg-primary p-2"
-        onPress={() => {
-          mutate({
-            title,
-            content,
-          });
-        }}
+      <Text
+        className="font-semibold"
+        style={name === "Google" ? { color: "black" } : { color: "#fff" }}
       >
-        <Text className="text-foreground">Create</Text>
-      </Pressable>
-      {error?.data?.code === "UNAUTHORIZED" && (
-        <Text className="mt-2 text-destructive">
-          You need to be logged in to create a post
-        </Text>
-      )}
-    </View>
-  );
-}
-
-function MobileAuth() {
-  const { data: session } = authClient.useSession();
-  return (
-    <>
-      <Text className="pb-2 text-center text-xl font-semibold">
-        {session?.user.name ?? "Not logged in"}
+        Log In with {name}
       </Text>
-      <Button
-        onPress={() => (session ? signOut() : signIn.social({
-          provider: "discord",
-          callbackURL: "/",
-        }))}
-        title={session ? "Sign Out" : "Sign In With Discord"}
-        color={"#5B65E9"}
-      />
-    </>
+    </TouchableOpacity>
   );
 }
 
 export default function Index() {
-  const utils = api.useUtils();
-
-  const deletePostMutation = api.post.delete.useMutation({
-    onSettled: () => utils.post.all.invalidate(),
-  });
+  const utils = api.useUtils(); // This 'utils' variable isn't used. Remove if not needed.
 
   return (
-    <SafeAreaView className="bg-background">
-      {/* Changes page title visible on the header */}
-      <Stack.Screen options={{ title: "Home Page" }} />
-      <View className="h-full w-full bg-background p-4">
-        <Text className="pb-2 text-center text-5xl font-bold text-foreground">
-          Create <Text className="text-primary">T3</Text> Turbo
-        </Text>
+    <SafeAreaView className="flex bg-background flex-1">
+      <Stack.Screen options={{ headerShown: false }} />
+      <View
+        // Potential Blunder 2: justify-between on main container with potentially tall content.
+        // This will push content apart. If the sum of content heights is greater than available space,
+        // it will cause overflow. Consider using `justify-center` or `gap` with appropriate padding.
+        className="flex-1 justify-center pt-5 p-4 items-center"
+      >
+        <View>
+          <Text
+            // Potential Blunder 3: Fixed width on "EveryNote" text.
+            // On very small screens, this can cause overflow. Consider using a percentage width
+            // or allowing it to take full width and rely on padding.
+            className="text-foreground font-bold text-3xl text-left pb-4 w-[80%]"
+          >
+            EveryNote
+          </Text>
 
-        <MobileAuth />
-
-        <View className="py-2">
-          <Text className="font-semibold italic text-primary">
-            Press on a post
+          <Text
+            style={{ fontSize: 13 }}
+            className="text-muted-foreground text-xs text-left font-normal leading-[1.5] mb-4 px-4"
+          >
+            Capture your thoughts, your way.{"\n"}Text, voice, or
+            media—EveryNote makes it effortless to record your day and reflect
+            with AI-powered clarity.
           </Text>
         </View>
 
-        <CreatePost />
+        <View
+          // Potential Blunder 4: Fixed height on image container.
+          // This fixes the space for the image, but if the image itself is too tall or short,
+          // it might not look right.
+          className="h-[40%] w-full items-center justify-center"
+        >
+          <Image
+            source={homepageImage as ImageSourcePropType}
+            style={{
+              width: screenWidth,
+              // Potential Blunder 5: Fixed height on image.
+              // A fixed height of 350px might be too tall for smaller devices,
+              // causing the content below it to be pushed off-screen.
+              // Consider a percentage height relative to the screen height,
+              // or calculate it based on the image's aspect ratio.
+              height: 350,
+              resizeMode: "contain",
+            }}
+          />
+        </View>
+
+        <View
+          // Potential Blunder 6: Large fixed margin-top.
+          // This adds a lot of space above the buttons, which might be fine on larger screens,
+          // but could contribute to overflow on smaller ones.
+          className="mt-[50px] justify-center items-center"
+        >
+          <MobileAuth
+            iconName="logo-google"
+            name="Google"
+            style={{ backgroundColor: "#fff" }}
+          />
+          <MobileAuth
+            iconName="logo-apple"
+            name="Apple"
+            style={{ backgroundColor: "#1e1e1e" }}
+          />
+        </View>
+
+        <Text className="text-muted-foreground text-center text-xs leading-normal mb-4 max-w-[300px]">
+          By continuing you agree to our Terms of service{"\n"}and Privacy
+          Policy.
+        </Text>
       </View>
     </SafeAreaView>
   );

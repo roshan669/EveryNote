@@ -30,6 +30,7 @@
     "@acme/eslint-config": "workspace:*",
     "@acme/prettier-config": "workspace:*",
     "@acme/tsconfig": "workspace:*",
+    "@types/pg": "^8.15.2",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"

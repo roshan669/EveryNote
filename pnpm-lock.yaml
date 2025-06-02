@@ -73,7 +73,7 @@ importers:
         specifier: ^0.0.0
         version: 0.0.0(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1))
       '@better-auth/expo':
-        specifier: ^1.1.15-beta.7
+        specifier: 1.1.15-beta.7
         version: 1.1.15-beta.7(better-auth@1.1.15-beta.7)
       '@better-fetch/fetch':
         specifier: ^1.1.12
@@ -108,6 +108,9 @@ importers:
       expo-dev-client:
         specifier: ~5.0.10
         version: 5.0.10(expo@52.0.28(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@expo/metro-runtime@4.0.1(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1)))(bufferutil@4.0.8)(graphql@15.8.0)(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))
+      expo-image:
+        specifier: ~2.0.7
+        version: 2.0.7(expo@52.0.28(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@expo/metro-runtime@4.0.1(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1)))(bufferutil@4.0.8)(graphql@15.8.0)(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)
       expo-linking:
         specifier: ~7.0.5
         version: 7.0.5(expo@52.0.28(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@expo/metro-runtime@4.0.1(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1)))(bufferutil@4.0.8)(graphql@15.8.0)(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)
@@ -305,9 +308,6 @@ importers:
       '@trpc/server':
         specifier: 'catalog:'
         version: 11.0.0-rc.477
-      pg:
-        specifier: ^8.13.1
-        version: 8.13.1
       superjson:
         specifier: 2.2.1
         version: 2.2.1
@@ -324,6 +324,9 @@ importers:
       '@acme/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
+      '@types/pg':
+        specifier: ^8.15.2
+        version: 8.15.2
       eslint:
         specifier: 'catalog:'
         version: 9.12.0(jiti@2.3.3)
@@ -399,10 +402,10 @@ importers:
         version: 0.10.0(utf-8-validate@6.0.4)
       drizzle-orm:
         specifier: ^0.35.1
-        version: 0.35.1(@neondatabase/serverless@0.10.0)(@opentelemetry/api@1.9.0)(@planetscale/database@1.19.0)(@types/pg@8.11.10)(@types/react@18.3.11)(@vercel/postgres@0.10.0(utf-8-validate@6.0.4))(kysely@0.27.4)(mysql2@3.11.3)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1)
+        version: 0.35.1(@neondatabase/serverless@0.10.0)(@opentelemetry/api@1.9.0)(@planetscale/database@1.19.0)(@types/pg@8.15.2)(@types/react@18.3.11)(@vercel/postgres@0.10.0(utf-8-validate@6.0.4))(kysely@0.27.4)(mysql2@3.11.3)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1)
       drizzle-zod:
         specifier: ^0.5.1
-        version: 0.5.1(drizzle-orm@0.35.1(@neondatabase/serverless@0.10.0)(@opentelemetry/api@1.9.0)(@planetscale/database@1.19.0)(@types/pg@8.11.10)(@types/react@18.3.11)(@vercel/postgres@0.10.0(utf-8-validate@6.0.4))(kysely@0.27.4)(mysql2@3.11.3)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8)
+        version: 0.5.1(drizzle-orm@0.35.1(@neondatabase/serverless@0.10.0)(@opentelemetry/api@1.9.0)(@planetscale/database@1.19.0)(@types/pg@8.15.2)(@types/react@18.3.11)(@vercel/postgres@0.10.0(utf-8-validate@6.0.4))(kysely@0.27.4)(mysql2@3.11.3)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8)
       zod:
         specifier: 'catalog:'
         version: 3.23.8
@@ -416,6 +419,9 @@ importers:
       '@acme/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
+      '@types/pg':
+        specifier: ^8.15.2
+        version: 8.15.2
       dotenv-cli:
         specifier: ^7.4.2
         version: 7.4.2
@@ -2885,11 +2891,11 @@ packages:
   '@types/node@22.7.5':
     resolution: {integrity: sha512-jML7s2NAzMWc//QSJ1a3prpk78cOPchGvXJsC3C6R6PSMoooztvRVQEz89gmBTBY1SPMaqo5teB4uNHPdetShQ==}
 
-  '@types/pg@8.11.10':
-    resolution: {integrity: sha512-LczQUW4dbOQzsH2RQ5qoeJ6qJPdrcM/DcMLoqWQkMLMsq83J5lAX3LXjdkWdpscFy67JSOWDnh7Ny/sPFykmkg==}
-
   '@types/pg@8.11.6':
     resolution: {integrity: sha512-/2WmmBXHLsfRqzfHW7BNZ8SbYzE8OSk7i3WjFYvfgRHj7S1xj+16Je5fUKv3lVdVzk/zn9TXOqf+avFCFIE0yQ==}
+
+  '@types/pg@8.15.2':
+    resolution: {integrity: sha512-+BKxo5mM6+/A1soSHBI7ufUglqYXntChLDyTbvcAn1Lawi9J7J9Ok3jt6w7I0+T/UDJ4CyhHk66+GZbwmkYxSg==}
 
   '@types/prop-types@15.7.13':
     resolution: {integrity: sha512-hCZTSvwbzWGvhqxp/RqVqwU999pBf2vp7hzIjiYOsl8wqOmUxkQ6ddw1cV3l8811+kdUFus/q4d1Y3E3SyEifA==}
@@ -4225,6 +4231,17 @@ packages:
       expo: '*'
       react: '*'
 
+  expo-image@2.0.7:
+    resolution: {integrity: sha512-kv40OIJOkItwznhdqFmKxTMC5O8GkpyTf8ng7Py4Hy6IBiH59dkeP6vUZQhzPhJOm5v1kZK4XldbskBosqzOug==}
+    peerDependencies:
+      expo: '*'
+      react: '*'
+      react-native: '*'
+      react-native-web: '*'
+    peerDependenciesMeta:
+      react-native-web:
+        optional: true
+
   expo-json-utils@0.14.0:
     resolution: {integrity: sha512-xjGfK9dL0B1wLnOqNkX0jM9p48Y0I5xEPzHude28LY67UmamUyAACkqhZGaPClyPNfdzczk7Ej6WaRMT3HfXvw==}
 
@@ -5279,6 +5296,7 @@ packages:
 
   lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
 
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
@@ -10121,14 +10139,13 @@ snapshots:
     dependencies:
       undici-types: 6.19.8
 
-  '@types/pg@8.11.10':
+  '@types/pg@8.11.6':
     dependencies:
       '@types/node': 20.16.11
       pg-protocol: 1.7.0
       pg-types: 4.0.2
-    optional: true
 
-  '@types/pg@8.11.6':
+  '@types/pg@8.15.2':
     dependencies:
       '@types/node': 20.16.11
       pg-protocol: 1.7.0
@@ -11247,12 +11264,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.35.1(@neondatabase/serverless@0.10.0)(@opentelemetry/api@1.9.0)(@planetscale/database@1.19.0)(@types/pg@8.11.10)(@types/react@18.3.11)(@vercel/postgres@0.10.0(utf-8-validate@6.0.4))(kysely@0.27.4)(mysql2@3.11.3)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1):
+  drizzle-orm@0.35.1(@neondatabase/serverless@0.10.0)(@opentelemetry/api@1.9.0)(@planetscale/database@1.19.0)(@types/pg@8.15.2)(@types/react@18.3.11)(@vercel/postgres@0.10.0(utf-8-validate@6.0.4))(kysely@0.27.4)(mysql2@3.11.3)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1):
     optionalDependencies:
       '@neondatabase/serverless': 0.10.0
       '@opentelemetry/api': 1.9.0
       '@planetscale/database': 1.19.0
-      '@types/pg': 8.11.10
+      '@types/pg': 8.15.2
       '@types/react': 18.3.11
       '@vercel/postgres': 0.10.0(utf-8-validate@6.0.4)
       kysely: 0.27.4
@@ -11261,9 +11278,9 @@ snapshots:
       postgres: 3.4.4
       react: 18.3.1
 
-  drizzle-zod@0.5.1(drizzle-orm@0.35.1(@neondatabase/serverless@0.10.0)(@opentelemetry/api@1.9.0)(@planetscale/database@1.19.0)(@types/pg@8.11.10)(@types/react@18.3.11)(@vercel/postgres@0.10.0(utf-8-validate@6.0.4))(kysely@0.27.4)(mysql2@3.11.3)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8):
+  drizzle-zod@0.5.1(drizzle-orm@0.35.1(@neondatabase/serverless@0.10.0)(@opentelemetry/api@1.9.0)(@planetscale/database@1.19.0)(@types/pg@8.15.2)(@types/react@18.3.11)(@vercel/postgres@0.10.0(utf-8-validate@6.0.4))(kysely@0.27.4)(mysql2@3.11.3)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8):
     dependencies:
-      drizzle-orm: 0.35.1(@neondatabase/serverless@0.10.0)(@opentelemetry/api@1.9.0)(@planetscale/database@1.19.0)(@types/pg@8.11.10)(@types/react@18.3.11)(@vercel/postgres@0.10.0(utf-8-validate@6.0.4))(kysely@0.27.4)(mysql2@3.11.3)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1)
+      drizzle-orm: 0.35.1(@neondatabase/serverless@0.10.0)(@opentelemetry/api@1.9.0)(@planetscale/database@1.19.0)(@types/pg@8.15.2)(@types/react@18.3.11)(@vercel/postgres@0.10.0(utf-8-validate@6.0.4))(kysely@0.27.4)(mysql2@3.11.3)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1)
       zod: 3.23.8
 
   eastasianwidth@0.2.0: {}
@@ -11816,6 +11833,12 @@ snapshots:
       expo: 52.0.28(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@expo/metro-runtime@4.0.1(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1)))(bufferutil@4.0.8)(graphql@15.8.0)(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)
       fontfaceobserver: 2.3.0
       react: 18.3.1
+
+  expo-image@2.0.7(expo@52.0.28(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@expo/metro-runtime@4.0.1(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1)))(bufferutil@4.0.8)(graphql@15.8.0)(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1):
+    dependencies:
+      expo: 52.0.28(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@expo/metro-runtime@4.0.1(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1)))(bufferutil@4.0.8)(graphql@15.8.0)(react-native@0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-native: 0.76.6(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@react-native-community/cli-server-api@13.6.9(bufferutil@4.0.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1)
 
   expo-json-utils@0.14.0: {}
 
@@ -13676,7 +13699,8 @@ snapshots:
   pg-cloudflare@1.1.1:
     optional: true
 
-  pg-connection-string@2.7.0: {}
+  pg-connection-string@2.7.0:
+    optional: true
 
   pg-int8@1.0.1: {}
 
@@ -13685,6 +13709,7 @@ snapshots:
   pg-pool@3.7.0(pg@8.13.1):
     dependencies:
       pg: 8.13.1
+    optional: true
 
   pg-protocol@1.7.0: {}
 
@@ -13695,6 +13720,7 @@ snapshots:
       postgres-bytea: 1.0.0
       postgres-date: 1.0.7
       postgres-interval: 1.2.0
+    optional: true
 
   pg-types@4.0.2:
     dependencies:
@@ -13715,10 +13741,12 @@ snapshots:
       pgpass: 1.0.5
     optionalDependencies:
       pg-cloudflare: 1.1.1
+    optional: true
 
   pgpass@1.0.5:
     dependencies:
       split2: 4.2.0
+    optional: true
 
   picocolors@1.0.1: {}
 
@@ -13812,23 +13840,27 @@ snapshots:
       picocolors: 1.1.0
       source-map-js: 1.2.1
 
-  postgres-array@2.0.0: {}
+  postgres-array@2.0.0:
+    optional: true
 
   postgres-array@3.0.2: {}
 
-  postgres-bytea@1.0.0: {}
+  postgres-bytea@1.0.0:
+    optional: true
 
   postgres-bytea@3.0.0:
     dependencies:
       obuf: 1.1.2
 
-  postgres-date@1.0.7: {}
+  postgres-date@1.0.7:
+    optional: true
 
   postgres-date@2.1.0: {}
 
   postgres-interval@1.2.0:
     dependencies:
       xtend: 4.0.2
+    optional: true
 
   postgres-interval@3.0.0: {}
 
@@ -14543,7 +14575,8 @@ snapshots:
 
   split-on-first@1.1.0: {}
 
-  split2@4.2.0: {}
+  split2@4.2.0:
+    optional: true
 
   split@1.0.1:
     dependencies:
