@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "4acf9aba-9807-41ff-b736-b4082edf28ce"
+      }
+    },
+    "android": {
+      "package": "com.cody669.everynote"
+    }
+  }
+}

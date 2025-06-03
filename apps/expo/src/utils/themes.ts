@@ -13,14 +13,6 @@ export const colors = {
     appleAuth: '#1e1e1e',
 };
 
-// export const fontSizes = {
-//     xs: 12,
-//     sm: 14,
-//     base: 16,
-//     lg: 18,
-//     xl: 20,
-//     '2xl': 24,
-//     '3xl': 30,
-// };
+
 
 export { screenWidth }; // Export screenWidth as well
