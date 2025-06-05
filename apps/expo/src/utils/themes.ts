@@ -3,6 +3,7 @@ import { Dimensions } from 'react-native';
 
 const { width: screenWidth } = Dimensions.get("window");
 
+
 export const colors = {
     background: '#0a0a0a',
     foreground: '#fafafa',

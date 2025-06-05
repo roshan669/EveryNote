@@ -12,7 +12,7 @@ export const runtime = "nodejs";
 
 export default function HomePage() {
   // You can await this here if you don't want to show Suspense fallback below
-  void api.post.all.prefetch();
+  void api.todo.all.prefetch();
 
   return (
     <HydrateClient>
@@ -28,7 +28,6 @@ export default function HomePage() {
             <Suspense
               fallback={
                 <div className="flex w-full flex-col gap-4">
-                  <PostCardSkeleton />
                   <PostCardSkeleton />
                   <PostCardSkeleton />
                 </div>

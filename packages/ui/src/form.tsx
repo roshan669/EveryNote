@@ -1,5 +1,3 @@
-"use client";
-
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import type {
   ControllerProps,
@@ -12,32 +10,33 @@ import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Slot } from "@radix-ui/react-slot";
 import {
-  useForm as __useForm,
+  useForm as __useForm, // Renamed to avoid conflict
   Controller,
   FormProvider,
   useFormContext,
+  // This is often needed if you're transforming input, but let's stick to basics for now
+  // useFormState,
 } from "react-hook-form";
 
 import { cn } from "@acme/ui";
 
 import { Label } from "./label";
 
-const useForm = <
-  TOut extends FieldValues,
-  TDef extends ZodTypeDef,
-  TIn extends FieldValues,
->(
-  props: Omit<UseFormProps<TIn>, "resolver"> & {
-    schema: ZodType<TOut, TDef, TIn>;
+// --- START OF PROPOSED CHANGE ---
+// Re-define useForm to be a simpler wrapper that always takes a schema
+const useForm = <T extends FieldValues>(
+  props: Omit<UseFormProps<T>, "resolver"> & {
+    schema: ZodType<T, ZodTypeDef, T>; // Input and Output are the same here for simplicity
   },
 ) => {
-  const form = __useForm<TIn, unknown, TOut>({
+  const form = __useForm<T>({
     ...props,
-    resolver: zodResolver(props.schema, undefined),
+    resolver: zodResolver(props.schema), // Pass resolver directly
   });
 
   return form;
 };
+// --- END OF PROPOSED CHANGE ---
 
 const Form = FormProvider;
 
@@ -68,7 +67,7 @@ const FormField = <
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext);
   const itemContext = React.useContext(FormItemContext);
-  const { getFieldState, formState } = useFormContext();
+  const { getFieldState, formState } = useFormContext(); // This needs FormProvider to work
 
   if (!fieldContext) {
     throw new Error("useFormField should be used within <FormField>");

@@ -11,7 +11,7 @@ export async function handleSignIn() {
     try {
         const res = await auth.api.signInSocial({
             body: {
-                provider: "discord",
+                provider: "google",
                 callbackURL: "/", // Ensure this matches your configured callback URL
             },
         });
