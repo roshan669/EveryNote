@@ -1,14 +1,48 @@
 import type { ImageSourcePropType } from "react-native";
-import { Image, Text, View, StyleSheet } from "react-native";
+import { Image, Text, View, StyleSheet, ActivityIndicator } from "react-native"; // Import ActivityIndicator
 import homepageImage from "../../assets/homepage.png";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack } from "expo-router";
-
-// Import your theme constants
+import { useSession } from "~/utils/auth";
 import { colors, screenWidth } from "../utils/themes";
 import MobileAuth from "../components/MobileAuth";
+import { useEffect } from "react";
+import { useRouter } from "expo-router";
+import { setToken } from "~/utils/session-store";
 
 export default function Index() {
+  // Use more descriptive names directly from the hook for clarity
+  const { data, isPending } = useSession();
+  const session = data?.session; // session data, if authenticated
+  const router = useRouter();
+
+  // useEffect for handling redirection after session state is determined
+  useEffect(() => {
+    // Only proceed once the session loading is complete
+    if (!isPending) {
+      if (session) {
+        // User is authenticated
+        setToken(session.token);
+        console.log("User is authenticated! Session data:", session);
+        router.replace("/editor/todo"); // Redirect to the authenticated part of the app
+      } else {
+        // User is not authenticated, remain on the login screen
+        console.log("User is not authenticated. Displaying login screen.");
+        // If your actual login screen was a *separate* route, you'd do:
+        // router.replace('/login');
+      }
+    }
+  }, [session, isPending, router]); // Dependencies: re-run when session or loading state changes
+
+  if (isPending) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Stack.Screen options={{ headerShown: false }} />
+        <ActivityIndicator size="large" color={colors.mutedForeground} />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Stack.Screen options={{ headerShown: false }} />
@@ -34,12 +68,13 @@ export default function Index() {
           <MobileAuth
             iconName="logo-google"
             name="Google"
-            style={{ backgroundColor: colors.googleAuth }} // Using the specific color constant
+            style={{ backgroundColor: colors.googleAuth }}
           />
+
           <MobileAuth
             iconName="logo-apple"
             name="Apple"
-            style={{ backgroundColor: colors.appleAuth }} // Using the specific color constant
+            style={{ backgroundColor: colors.appleAuth }}
           />
         </View>
 
@@ -56,12 +91,19 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
   },
+  loadingContainer: {
+    // New style for the loading screen
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.background, // Or your app's main background color
+  },
   mainContainer: {
     justifyContent: "center",
     paddingHorizontal: 5,
   },
   everyNoteTitle: {
-    fontWeight: "700", // font-bold
+    fontWeight: "700",
     fontSize: 25,
     textAlign: "left",
     paddingBottom: 10,
@@ -69,14 +111,14 @@ const styles = StyleSheet.create({
   taglineText: {
     fontSize: 12,
     color: colors.mutedForeground,
-    textAlign: "left", // text-left
-    fontWeight: "400", // font-normal
+    textAlign: "left",
+    fontWeight: "400",
   },
   imageContainer: {
     height: 385,
     width: "100%",
-    alignItems: "center", // items-center
-    justifyContent: "center", // justify-center
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 20,
   },
   homepageImage: {
@@ -85,8 +127,8 @@ const styles = StyleSheet.create({
   },
   authButtonsContainer: {
     marginTop: 5,
-    justifyContent: "center", // justify-center
-    alignItems: "center", // items-center
+    justifyContent: "center",
+    alignItems: "center",
   },
   termsText: {
     color: colors.mutedForeground,

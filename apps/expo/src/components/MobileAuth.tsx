@@ -2,8 +2,10 @@ import type { ViewStyle, StyleProp } from "react-native";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../utils/themes";
-import { signIn } from "~/utils/auth";
+import { authClient, signIn } from "~/utils/auth";
 import { useRouter } from "expo-router";
+
+import React from "react";
 
 interface MobileAuthProps {
   iconName: "logo-google" | "logo-apple";
@@ -19,13 +21,11 @@ function MobileAuth({ iconName, name, style }: MobileAuthProps) {
   return (
     <TouchableOpacity
       style={[styles.authButton, style]}
-      onPress={() => {
-        //   await signIn.social({
-        //     provider: "google",
-
-        //   });
-        // }
-        router.push('/editor/"hello"');
+      onPress={async () => {
+        await signIn.social({
+          provider: "discord",
+          callbackURL: "exp+every-note://",
+        });
       }}
     >
       <Ionicons name={iconName} size={23} color={textColor} />

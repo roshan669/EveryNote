@@ -6,11 +6,11 @@ import * as SecureStore from "expo-secure-store"
 export const authClient = createAuthClient({
     plugins: [expoClient({
 
-        scheme: "expo",
+        scheme: "everynote",
         storage: SecureStore
     })],
-    baseURL: "http://192.168.253.132:3000",
+    baseURL: "http://192.168.244.132:3000",
 })
 
-export const { signIn, signOut } = authClient;
+export const { signIn, signOut, useSession } = authClient;
 

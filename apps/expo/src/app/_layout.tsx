@@ -8,11 +8,14 @@ import { TRPCProvider } from "~/utils/api";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import "../styles.css";
+import { useEffect } from "react";
+import * as WebBrowser from "expo-web-browser";
 
 // This is the main layout of the app
 // It wraps your pages with the providers they need
 export default function RootLayout() {
   const { colorScheme } = useColorScheme();
+  WebBrowser.maybeCompleteAuthSession();
 
   return (
     <TRPCProvider>
@@ -28,10 +31,7 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen
-          name="editor/[id]"
-          getId={({ params }) => {
-            return params.id;
-          }}
+          name="editor/todo"
           options={{
             headerShown: false, // Example: hide header for this screen
             // title: "Editor",

@@ -55,7 +55,8 @@
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",
     "POWERSYNC_PROJECT_ID",
-    "POWERSYNC_PRIVATE_KEY"
+    "POWERSYNC_PRIVATE_KEY",
+    "BETTER_AUTH_URL"
   ],
   "globalPassThroughEnv": [
     "NODE_ENV",

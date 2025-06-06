@@ -1,18 +1,15 @@
 // packages/api/src/router/powersync.ts
 import { z } from 'zod';
-import { publicProcedure } from '../trpc'; // Assuming your tRPC setup
+import { protectedProcedure } from '../trpc'; // Assuming your tRPC setup
 
 import { generatePowerSyncToken } from '../services/powersync';
 import { TRPCError } from '@trpc/server';
 
 export const powersyncRouter = {
-    getCredentials: publicProcedure // You might want to make this protected and get userId from session
-        .input(z.object({ userId: z.string().optional() })) // Accept userId as input or get from session
-        .mutation(async ({ input }) => {
-            // **IMPORTANT**: In a real app, you would get the `userId` from your
-            // authentication system (e.g., NextAuth.js session: `ctx.session.user.id`).
-            // For this example, we'll use a placeholder or the input.
-            const userId = input.userId || 'anonymous-user'; // Replace with actual authenticated user ID
+    getCredentials: protectedProcedure // Change to protectedProcedure
+        .input(z.object({ id: z.string().uuid() })) // Assuming Todo.id is a UUID, enforce it with .uuid()
+        .query(({ ctx }) => {
+            const userId = ctx.session.user.id;
 
             if (!userId) {
                 throw new TRPCError({

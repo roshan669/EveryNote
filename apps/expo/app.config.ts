@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: "Every Note",
   slug: "every-note",
-  scheme: "expo",
+  scheme: "everynote",
   version: "0.1.0",
   orientation: "portrait",
   icon: "./assets/icon.png",
@@ -23,7 +23,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     supportsTablet: true,
   },
   android: {
-    package: "your.bundle.identifier",
+    package: "cody.everynote",
     adaptiveIcon: {
       foregroundImage: "./assets/icon.png",
       backgroundColor: "#1F104A",
@@ -38,14 +38,5 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     tsconfigPaths: true,
     typedRoutes: true,
   },
-  plugins: [
-    [
-      "@react-native-google-signin/google-signin",
-      {
-        "android": {
-          "webClientId": "209825836871-ackkhc4b720fn1nn1m52fchjjnbbl72s.apps.googleusercontent.com"
-        }
-      }
-    ],
-    "expo-router", "expo-secure-store"],
+  plugins: ["expo-router", "expo-secure-store"],
 });

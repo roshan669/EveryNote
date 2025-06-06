@@ -7,8 +7,9 @@ import {
   View,
   StyleSheet,
   TouchableOpacity, // Import StyleSheet
+  ActivityIndicator, // Import ActivityIndicator for loading state
 } from "react-native";
-import { colors } from "../../utils/themes"; // Ensure colors is imported
+import { colors } from "../../utils/themes";
 import { useGlobalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -22,47 +23,63 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
-import { UseTRPCSuspenseQueryResult } from "@trpc/react-query/shared";
+// No need for UseTRPCQueryResult directly here
+import { useSession } from "~/utils/auth"; // Ensure this provides 'isPending'
 
 export default function Post() {
-  const { id } = useGlobalSearchParams();
-  const [todosFromApi] = api.todo.all.useSuspenseQuery();
+  // Get both the session data and the loading status of the session
+  const { data: session, isPending: isSessionLoading } = useSession();
+  const user_id = session?.user.id ?? ""; // Safely access user.id
 
-  const [todo, setTodo] = useState<
+  // Conditionally enable the todo.all query
+  const { data: todosData, isLoading: areTodosLoading } = api.todo.all.useQuery(
+    undefined, // No input for todo.all
+    {
+      // --- CRUCIAL CHANGE: Only run this query if session data exists and is not loading ---
+      enabled: !!session && !isSessionLoading,
+    },
+  );
+
+  // State to hold the fetched todos
+  const [todos, setTodos] = useState<
     {
       id: string;
       title: string;
       content: string;
       created_at: Date;
+      completed: boolean;
       updated_at: Date | null;
+      owner: string;
     }[]
-  >();
+  >([]); // Initialize with an empty array
 
   useEffect(() => {
-    setTodo(todosFromApi);
-  }, []);
+    // When todosData changes (and is not undefined), update the state
+    // api.todo.all.useQuery returns an array of todos, so no need to wrap it
+    setTodos(todosData || []);
+  }, [todosData]);
 
   const darkEditorCss = `
-  * {
-    background-color: ${colors.background};
-    color: ${colors.mutedForeground};
-    font-size: 20px;
-  }
-  blockquote {
-    border-left: 3px solid #babaca;
-    padding-left: 1rem;
-  }
-  .highlight-background {
-    background-color: #474749;
-  }
-`;
+    * {
+      background-color: ${colors.background};
+      color: ${colors.mutedForeground};
+      font-size: 20px;
+    }
+    blockquote {
+      border-left: 3px solid #babaca;
+      padding-left: 1rem;
+    }
+    .highlight-background {
+      background-color: #474749;
+    }
+  `;
 
   const datetoday = new Date().toDateString().split("").splice(3, 14).join("");
 
   const editor = useEditorBridge({
     bridgeExtensions: [
       ...TenTapStartKit,
-      CoreBridge.configureCSS(darkEditorCss), // <--- Add our dark mode css
+      CoreBridge.configureCSS(darkEditorCss),
     ],
     theme: darkEditorTheme,
     autofocus: true,
@@ -70,6 +87,33 @@ export default function Post() {
     initialContent: `<h4>${datetoday}</h4>What's on you mind today?`,
   });
 
+  // Show a loading indicator if either session or todos are loading
+  if (isSessionLoading || areTodosLoading) {
+    return (
+      <SafeAreaView style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={colors.mutedForeground} />
+        <Text style={{ color: colors.mutedForeground, marginTop: 10 }}>
+          Loading your notes...
+        </Text>
+      </SafeAreaView>
+    );
+  }
+
+  // If session is NOT loading AND no session exists, maybe redirect to login or show error
+  if (!session) {
+    // This case should ideally be handled by your root _layout.tsx or Index.tsx
+    // If you're here, it means a non-authenticated user reached this protected route.
+    return (
+      <SafeAreaView style={styles.loadingContainer}>
+        <Text style={{ color: "red", textAlign: "center" }}>
+          You must be logged in to view notes.
+        </Text>
+        {/* You might add a button to go back to login */}
+      </SafeAreaView>
+    );
+  }
+
+  // --- Render the main content only when session is loaded and query is ready ---
   return (
     <SafeAreaView style={styles.safeArea} className="bg-background">
       <View style={{ flex: 1 }}>
@@ -99,7 +143,7 @@ export default function Post() {
         <View>
           <FlatList
             horizontal
-            data={todo}
+            data={todos} // Use the correct state variable 'todos'
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.flatListItemWrapper}
@@ -145,31 +189,36 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
   },
-
+  loadingContainer: {
+    // New style for loading state
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.background,
+  },
   headerRow: {
-    // backgroundColor: ,
     flexDirection: "row",
-    gap: 16, // Equivalent to gap-4 (16px)
+    gap: 16,
     justifyContent: "center",
     height: 45,
     alignItems: "center",
-    marginTop: 4, // Equivalent to mt-1 (4px)
-    marginBottom: 8, // Equivalent to mb-2 (8px)
+    marginTop: 4,
+    marginBottom: 8,
   },
   searchBarWrapper: {
     width: "67%",
-    borderRadius: 9999, // Equivalent to rounded-full
+    borderRadius: 9999,
     height: "85%",
     justifyContent: "flex-start",
     alignItems: "center",
-    paddingLeft: 16, // Equivalent to pl-4 (16px)
+    paddingLeft: 16,
     flexDirection: "row",
-    gap: 8, // Equivalent to gap-2 (8px)
+    gap: 8,
     elevation: 1,
   },
   searchBarText: {
-    fontSize: 18, // Equivalent to text-lg
-    fontWeight: "600", // Equivalent to font-semibold
+    fontSize: 18,
+    fontWeight: "600",
   },
   headerImage: {
     resizeMode: "contain",
@@ -178,35 +227,28 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 40,
   },
-
-  flatListBackground: {
-    // This is not used directly on FlatList, but FlatList usually inherits parent background
-    // If you need a specific background for the FlatList content area, you'd add it here.
-    // However, the items themselves have background, so the FlatList background might not be visible.
-  },
   flatListItemWrapper: {
-    flex: 1, // Make sure it respects flex if parent has it
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   flatListItemText: {
-    marginLeft: 8, // Equivalent to ml-2 (8px)
-    marginVertical: 12, // Equivalent to my-3 (12px)
-    height: 35, // Equivalent to h-10 (40px)
-    width: 70, // Equivalent to w-[70px]
-    // padding:, // Equivalent to p-1 (4px)
-    fontSize: 11, // Equivalent to text-sm
-    fontWeight: "300", // Equivalent to font-medium
-    borderWidth: 0.2, // Equivalent to border-[0.2px]
+    marginLeft: 8,
+    marginVertical: 12,
+    height: 35,
+    width: 70,
+    fontSize: 11,
+    fontWeight: "300",
+    borderWidth: 0.2,
     borderColor: colors.mutedForeground,
-    borderRadius: 24, // Equivalent to rounded-3xl (24px)
+    borderRadius: 24,
     textAlign: "center",
-    justifyContent: "center", // Vertically center content inside Text
+    justifyContent: "center",
     textAlignVertical: "center",
   },
   richTextBackground: {
-    backgroundColor: colors.foreground, // Equivalent to bg-foreground
-    flex: 1, // Added flex:1 to ensure RichText takes available space
+    backgroundColor: colors.foreground,
+    flex: 1,
   },
   footer: {
     margin: 5,

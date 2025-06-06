@@ -11,13 +11,15 @@ export async function handleSignIn() {
     try {
         const res = await auth.api.signInSocial({
             body: {
-                provider: "google",
-                callbackURL: "/", // Ensure this matches your configured callback URL
+                provider: "discord",
+                callbackURL: "http://192.168.244.132:3000/api/auth/callback/discord", // Ensure this matches your configured callback URL
             },
         });
 
         if (res.url) {
+            console.log(res.url)
             redirect(res.url); // `redirect` must be thrown in server actions
+
         } else {
             console.error("Sign-in URL not received from auth.api.signInSocial");
             // Consider a fallback redirect to an error page or a message for the user
