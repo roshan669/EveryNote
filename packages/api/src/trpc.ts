@@ -30,6 +30,8 @@ export const createTRPCContext = async (opts: {
   const session = await auth.api.getSession({
     headers: opts.headers,
   })
+  const authHeader = opts.headers.get("authorization"); // <-- Make sure this line exists
+  console.log("Backend: Incoming Authorization header:", authHeader)
   return {
     session,
     db,

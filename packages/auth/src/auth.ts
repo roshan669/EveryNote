@@ -20,10 +20,10 @@ export const config = {
             redirectURI: "http://192.168.244.132:3000/api/auth/callback/discord",
         },
         google: {
-            clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            clientId: env.GOOGLE_CLIENT_ID,
+            clientSecret: env.GOOGLE_CLIENT_SECRET,
             // CHANGE THIS LINE:
-            redirectURI: "http://192.168.244.132:3000/api/auth/callback/google",
+            redirectURI: "http://localhost:3000/api/auth/callback/google",
         },
     },
     trustedOrigins: ["exp+every-note://", "exp+every-note://expo-development-client/--/?url=http%3A%2F%2F192.168.244.132%3A8081"] // Good to include both for development client

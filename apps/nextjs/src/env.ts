@@ -10,6 +10,8 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "production", "test"])
       .default("development"),
+    POWERSYNC_WEBHOOK_SECRET: z.string().min(1),
+    POWERSYNC_PRIVATE_KEY: z.string().min(1),
   },
   /**
    * Specify your server-side environment variables schema here.
@@ -31,8 +33,8 @@ export const env = createEnv({
    */
   experimental__runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+    POWERSYNC_WEBHOOK_SECRET: process.env.POWERSYNC_WEBHOOK_SECRET,
+    POWERSYNC_PRIVATE_KEY: process.env.POWERSYNC_PRIVATE_KEY,
   },
   skipValidation:
     !!process.env.CI || process.env.npm_lifecycle_event === "lint",

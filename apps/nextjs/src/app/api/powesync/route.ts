@@ -4,9 +4,10 @@ import * as crypto from 'crypto';
 import { db } from '@acme/db/client'; // Your Drizzle DB instance
 import { eq } from 'drizzle-orm'; // Import eq for WHERE clauses
 import { Todo } from '@acme/db/schema'; // Assuming you have this schema
+import { env } from '~/env';
 
 // Ensure this environment variable is set
-const POWERSYNC_WEBHOOK_SECRET = process.env.POWERSYNC_WEBHOOK_SECRET || ''; // From PowerSync Dashboard -> Webhooks
+const POWERSYNC_WEBHOOK_SECRET = env.POWERSYNC_WEBHOOK_SECRET ?? ''; // From PowerSync Dashboard -> Webhooks
 
 if (!POWERSYNC_WEBHOOK_SECRET) {
     console.error('Missing PowerSync environment variable (POWERSYNC_WEBHOOK_SECRET)!');
@@ -32,9 +33,16 @@ async function verifyWebhookSignature(rawBody: string, signature: string, secret
  * transaction management, and potentially detailed logging.
  * @param mutations An array of mutation objects from the webhook payload.
  */
-async function applyPowerSyncMutations(mutations: any[]) {
+async function applyPowerSyncMutations(mutations: unknown[]) {
     for (const mutation of mutations) {
-        const { op, table, data, id, client_id, user_id } = mutation; // PowerSync mutation fields
+        const { op, table, data, id, client_id: _client_id, user_id: _user_id } = mutation as {
+            op: string;
+            table: string;
+            data: Partial<typeof Todo.$inferInsert>;
+            id: string;
+            client_id?: string;
+            user_id?: string;
+        }; // PowerSync mutation fields
         // `id` is the primary key for the row in your database.
         // `user_id` is the `user_id` from the JWT that initiated the mutation.
         // `client_id` is the unique ID of the client that originated the mutation.
@@ -59,14 +67,16 @@ async function applyPowerSyncMutations(mutations: any[]) {
 
         try {
             if (op === 'PUT' || op === 'PATCH') {
-                // PUT/PATCH: Insert or update. Use Drizzle's upsert equivalent.
-                await db.insert(targetTable).values(data).onConflictDoUpdate({
-                    target: targetTable.id, // Assuming 'id' is your primary key column in `Todo`
-                    set: data, // Update with the new data
-                    // Optional: Add WHERE clause for row-level security if not handled by sync rules.
-                    // e.g., where: eq(targetTable.owner_id, user_id) // `user_id` comes from the PowerSync mutation payload
-                });
-                console.log(`Applied ${op} mutation for table ${table}, id ${id}`);
+                // Ensure all required fields are present
+                if (data.title && data.content && data.owner) {
+                    await db.insert(targetTable).values(data as typeof Todo.$inferInsert).onConflictDoUpdate({
+                        target: targetTable.id,
+                        set: data as typeof Todo.$inferInsert,
+                    });
+                    console.log(`Applied ${op} mutation for table ${table}, id ${id}`);
+                } else {
+                    console.warn(`Skipping mutation for table ${table}, id ${id}: missing required fields`, data);
+                }
             } else if (op === 'DELETE') {
                 // DELETE: Delete the row.
                 // IMPORTANT: Implement row-level security here if not fully handled by sync rules.
@@ -99,7 +109,7 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-        const payload = JSON.parse(rawBody);
+        const payload = JSON.parse(rawBody) as { mutations: unknown[] };
         const mutations = payload.mutations;
 
         if (!Array.isArray(mutations)) {

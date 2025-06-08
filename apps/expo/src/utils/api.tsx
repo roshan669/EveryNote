@@ -7,7 +7,8 @@ import superjson from "superjson";
 import type { AppRouter } from "@acme/api";
 
 import { getBaseUrl } from "./base-url";
-import { getToken } from "./session-store"; // Make sure getToken is async
+
+import { authClient } from "./auth";
 
 /**
  * A set of typesafe hooks for consuming your API.
@@ -33,14 +34,13 @@ export function TRPCProvider(props: { children: React.ReactNode }) {
         httpBatchLink({
           transformer: superjson,
           url: `${getBaseUrl()}/api/trpc`,
-          // --- CHANGE THIS FUNCTION TO ASYNC ---
           async headers() {
-            // <-- ADD 'async' here
+            // Use async if authClient.getCookie() is async
             const headers = new Map<string, string>();
-            headers.set("x-trpc-source", "expo-react");
-
-            const token = await getToken(); // <-- ADD 'await' here
-            if (token) headers.set("Authorization", `Bearer ${token}`);
+            const cookies = await authClient.getCookie(); // Make sure getCookie is awaited if async
+            if (cookies) {
+              headers.set("Cookie", cookies);
+            }
 
             return Object.fromEntries(headers);
           },

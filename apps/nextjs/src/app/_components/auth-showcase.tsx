@@ -22,7 +22,7 @@ export async function AuthShowcase() {
             redirect(res.url);
           }}
         >
-          Sign in with Discord
+          Sign in with google
         </Button>
       </form>
     );

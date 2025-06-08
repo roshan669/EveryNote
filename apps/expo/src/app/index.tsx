@@ -8,12 +8,12 @@ import { colors, screenWidth } from "../utils/themes";
 import MobileAuth from "../components/MobileAuth";
 import { useEffect } from "react";
 import { useRouter } from "expo-router";
-import { setToken } from "~/utils/session-store";
 
 export default function Index() {
   // Use more descriptive names directly from the hook for clarity
   const { data, isPending } = useSession();
   const session = data?.session; // session data, if authenticated
+
   const router = useRouter();
 
   // useEffect for handling redirection after session state is determined
@@ -21,9 +21,10 @@ export default function Index() {
     // Only proceed once the session loading is complete
     if (!isPending) {
       if (session) {
-        // User is authenticated
-        setToken(session.token);
-        console.log("User is authenticated! Session data:", session);
+        // User is authenticatedhj
+        console.log("Full session object received:", session);
+        // setToken(data.user.id);
+        // console.log("User is authenticated! Session data:", session);
         router.replace("/editor/todo"); // Redirect to the authenticated part of the app
       } else {
         // User is not authenticated, remain on the login screen
@@ -77,11 +78,12 @@ export default function Index() {
             style={{ backgroundColor: colors.appleAuth }}
           />
         </View>
-
-        <Text style={styles.termsText}>
-          By continuing you agree to our Terms of service{"\n"}and Privacy
-          Policy.
-        </Text>
+        <View style={styles.termsTextContainer}>
+          <Text style={styles.termsText}>
+            By continuing you agree to our Terms of service{"\n"}and Privacy
+            Policy.
+          </Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -100,16 +102,16 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     justifyContent: "center",
-    paddingHorizontal: 5,
+    paddingLeft: 5,
   },
   everyNoteTitle: {
     fontWeight: "700",
-    fontSize: 25,
+    fontSize: 28,
     textAlign: "left",
-    paddingBottom: 10,
+    paddingBottom: 15,
   },
   taglineText: {
-    fontSize: 12,
+    fontSize: 15,
     color: colors.mutedForeground,
     textAlign: "left",
     fontWeight: "400",
@@ -126,14 +128,21 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   authButtonsContainer: {
-    marginTop: 5,
+    marginTop: 35,
     justifyContent: "center",
     alignItems: "center",
+  },
+  termsTextContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
   },
   termsText: {
     color: colors.mutedForeground,
     textAlign: "center",
-    fontSize: 10,
+    textAlignVertical: "center",
+    fontSize: 13,
     maxWidth: 300,
+    fontWeight: "200",
   },
 });

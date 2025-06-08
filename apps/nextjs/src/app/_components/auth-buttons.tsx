@@ -1,7 +1,7 @@
 // app/components/auth-buttons.tsx
 "use client"; // This directive is CRUCIAL for this file
 
-import { handleSignIn, handleSignOut } from "@/app/components/actions/auth"; // Import your server actions
+import { handleSignIn, handleSignOut } from "../../actions/auth"; // Import your server actions
 import { Button } from "@acme/ui/button"; // Assuming your Button component is working
 
 interface AuthButtonsProps {
@@ -23,7 +23,7 @@ export function AuthButtons({ userName }: AuthButtonsProps) {
           formAction={handleSignIn} // Pass the server action to formAction
           className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
-          Sign in with Discord
+          Sign in with Google
         </Button>
       </form>
     );

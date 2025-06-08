@@ -2,8 +2,7 @@ import type { ViewStyle, StyleProp } from "react-native";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../utils/themes";
-import { authClient, signIn } from "~/utils/auth";
-import { useRouter } from "expo-router";
+import { signIn } from "~/utils/auth";
 
 import React from "react";
 
@@ -16,7 +15,6 @@ interface MobileAuthProps {
 function MobileAuth({ iconName, name, style }: MobileAuthProps) {
   const isGoogle = name === "Google";
   const textColor = isGoogle ? colors.black : colors.white;
-  const router = useRouter();
 
   return (
     <TouchableOpacity
@@ -25,6 +23,7 @@ function MobileAuth({ iconName, name, style }: MobileAuthProps) {
         await signIn.social({
           provider: "discord",
           callbackURL: "exp+every-note://",
+          // disableRedirect: true,
         });
       }}
     >
@@ -41,11 +40,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     borderRadius: 30,
-    height: 40,
+    height: 45,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 15,
-    width: 250,
+    width: "88%",
     elevation: 1,
   },
   authButtonText: {
